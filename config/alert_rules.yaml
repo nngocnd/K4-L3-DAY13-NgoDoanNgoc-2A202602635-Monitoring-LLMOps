@@ -1,25 +1,31 @@
 alerts:
-  - name: TODO_alert_1
-    severity: TODO
-    condition: TODO
-    duration: TODO
+  - name: slow_responses_p95_slo_breach
+    severity: P2
+    condition: 'percentile(latency_ms of event == "response_sent", 95) over 5m > 3000'
+    duration: 5m
     type: symptom-based
+    slo: fast_successful_requests
     channel: slack
-    owner: TODO
+    slack_channel: '#day13-llmops-oncall'
+    owner: ngo-doan-ngoc (on-call LLMOps)
     runbook: docs/alerts.md#alert-1
-  - name: TODO_alert_2
-    severity: TODO
-    condition: TODO
-    duration: TODO
+  - name: high_error_rate
+    severity: P1
+    condition: 'count(event == "request_failed") / count(event == "request_received") * 100 over 5m > 2'
+    duration: 5m
     type: symptom-based
+    slo: fast_successful_requests
     channel: slack
-    owner: TODO
+    slack_channel: '#day13-llmops-oncall'
+    owner: ngo-doan-ngoc (on-call LLMOps)
     runbook: docs/alerts.md#alert-2
-  - name: TODO_alert_3
-    severity: TODO
-    condition: TODO
-    duration: TODO
+  - name: cost_burn_above_daily_budget_pace
+    severity: P3
+    condition: 'sum(cost_usd of event == "response_sent") over 1h > 0.21  # 2x nhịp 2.5 USD/ngày (0.104 USD/h)'
+    duration: 15m
     type: symptom-based
+    slo: guardrails.daily_cost_usd_max
     channel: slack
-    owner: TODO
+    slack_channel: '#day13-llmops-cost'
+    owner: ngo-doan-ngoc (LLMOps cost owner)
     runbook: docs/alerts.md#alert-3

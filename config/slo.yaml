@@ -7,7 +7,19 @@ primary_slo:
     total_event: 'event == "request_received"'
   target_percent: 99.5
   error_budget_percent: 0.5
-  note: Học viên phải giải thích hoặc điều chỉnh ngưỡng bằng baseline của mình.
+  note: >-
+    Giữ ngưỡng 3000 ms / 99.5%. Baseline đo ngày 2026-09-29 (78 request, 60 phút):
+    P50 153 ms, P95 2654 ms (gồm lượt thử rag_slow), TTFT P95 51 ms, 0 lỗi.
+    Request bình thường ~150 ms; request đầu tiên của mỗi process ~1.1–1.5 s do
+    fetch prompt từ Langfuse (cache miss); rag_slow đẩy latency lên ~2.65 s.
+    3000 ms chừa headroom cho cold start và một incident retrieval nhẹ nhưng sẽ
+    vi phạm khi retrieval chậm hơn nữa hoặc request bị xếp hàng. Request lỗi
+    (request_failed) không có response_sent nên tự động tính là bad event.
+  error_budget:
+    formula: 'allowed_bad_events = total_events * (100 - target_percent) / 100'
+    example_28d_at_10_rpm: 'total = 10 * 60 * 24 * 28 = 403200 -> allowed_bad = 2016 request'
+    baseline_window: 'total = 78, bad = 0 -> budget consumed 0% (78 * 0.5% = 0.39 request cho phép)'
+    burn_rate: 'burn_rate = bad_ratio / 0.005; burn 14.4 trong 1h = tiêu 2% budget 28 ngày'
 guardrails:
   error_rate_pct_max: 2
   daily_cost_usd_max: 2.5
