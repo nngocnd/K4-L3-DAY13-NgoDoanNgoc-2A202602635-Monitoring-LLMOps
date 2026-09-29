@@ -7,7 +7,7 @@
 - **Họ và tên:** Ngọ Doãn Ngọc
 - **MSSV:** 2A202602635
 - **Lớp:** K4-L3A
-- **Repository URL:** 
+- **Repository URL:** https://github.com/nngocnd/K4-L3-DAY13-NgoDoanNgoc-2A202602635-Monitoring-LLMOps
 - **Commit SHA cuối:** 
 - **Challenge ID:** `day13-k4-l3a-monitoring-llmops-v1`
 - **Tên project Langfuse cá nhân:** `day13-k4-l3a-2A202602635`
